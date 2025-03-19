@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jsPsych Free Sort Experiment</title>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Include jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+
+    <!-- Include jsPsych -->
+    <script src="https://cdn.jsdelivr.net/npm/jspsych@8.2.1/dist/jspsych.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspsych@8.2.1/dist/css/jspsych.css">
+
+    <!-- Include jsPsych plugin -->
+    <!-- Updated the path for local plugin reference -->
+    <script type="module" src="./dist/plugin-free-sort.js"></script>
+
+</head>
+<body>
+
+<script type="module">
+    // Import jsPsych and the required plugin
+    import { jsPsych } from 'https://cdn.jsdelivr.net/npm/jspsych@8.2.1/dist/jspsych.js';
+    import { jsPsychFreeSort } from './dist/plugin-free-sort.js'; // Correct relative path to plugin
+
+    // Initialize jsPsych
+    const experiment = new jsPsych();
+
+    // Define the stimuli for the sorting task
+    const sorting_stimuli = [
+        'https://i.imgur.com/kyGAFub.jpg',
+        'https://i.imgur.com/fCJBqdu.jpg'
+    ];
+
+    // Create a free-sort trial
+    const sort_trial = {
+        type: jsPsychFreeSort,
+        stimuli: sorting_stimuli,
+        stim_height: 100,
+        stim_width: 100,
+        sort_area_height: 800,
+        sort_area_width: 800,
+        prompt: "<p>Click and drag the images below to sort them so that similar items are close together.</p>",
+        prompt_location: "above"
+    };
+
+    // Add trial to the timeline
+    const timeline = [sort_trial];
+
+    // Run the experiment
+    experiment.run(timeline);
+</script>
+
+</body>
+</html>
