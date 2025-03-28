@@ -57,10 +57,48 @@
   </div>
 
   <script>
-    document.getElementById("continueButton").addEventListener("click", function() {
-      window.location.href = "FreeResponse.html";  // Redirect to FreeResponse.html after the story
+    document.addEventListener("DOMContentLoaded", function () {
+      const draggables = document.querySelectorAll(".draggable");
+
+      draggables.forEach((item) => {
+        item.addEventListener("mousedown", function (event) {
+          let shiftX = event.clientX - item.getBoundingClientRect().left;
+          let shiftY = event.clientY - item.getBoundingClientRect().top;
+
+          function moveAt(pageX, pageY) {
+            item.style.left = pageX - shiftX + "px";
+            item.style.top = pageY - shiftY + "px";
+          }
+
+          function onMouseMove(event) {
+            moveAt(event.pageX, event.pageY);
+          }
+
+          document.addEventListener("mousemove", onMouseMove);
+
+          item.addEventListener("mouseup", function () {
+            document.removeEventListener("mousemove", onMouseMove);
+          });
+
+          item.ondragstart = function () {
+            return false;
+          };
+        });
+      });
+
+      // Redirect to FreeResponse.html when the user clicks "Continue"
+      const continueButton = document.getElementById("continueButton");
+      if (continueButton) {
+        continueButton.addEventListener("click", function () {
+          console.log("Redirecting to FreeResponse.html...");
+          window.location.href = "FreeResponse.html";  // Go to FreeResponse.html after the activity
+        });
+      } else {
+        console.error("Error: continueButton not found in the DOM.");
+      }
     });
   </script>
+
 
 </body>
 </html>

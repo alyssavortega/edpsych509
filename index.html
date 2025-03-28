@@ -27,9 +27,6 @@ const assignedCondition = conditions[Math.floor(Math.random() * conditions.lengt
 // Store the condition in sessionStorage
 sessionStorage.setItem("assignedCondition", assignedCondition);
 
-// Redirect to the next page
-window.location.href = "freeResponse.html"; // Ensure this points to the freeResponse page
-
 // 📜 Condition-specific instructions
 const instructionTexts = {
   "text-only": "Please read the following text carefully.",
@@ -61,14 +58,6 @@ function startActivity() {
   } else {
     window.location.href = "Activity.html"; // Redirect to Activity.html for all other conditions
   }
-}
-
-function showFreeResponse() {
-  contentDiv.innerHTML = `
-    <p>Please recount as much of the story as possible below.</p>
-    <textarea id="responseBox"></textarea>
-  `;
-  nextButton.innerText = "Submit";
 }
 
 function saveData() {

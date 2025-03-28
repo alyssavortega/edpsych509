@@ -127,9 +127,15 @@
       });
 
       // Redirect to FreeResponse.html when the user clicks "Continue"
-      document.getElementById("continueButton").addEventListener("click", function() {
-        window.location.href = "FreeResponse.html";  // Go to FreeResponse.html after the activity
-      });
+      const continueButton = document.getElementById("continueButton");
+      if (continueButton) {
+        continueButton.addEventListener("click", function () {
+          console.log("Redirecting to FreeResponse.html...");
+          window.location.href = "FreeResponse.html";  // Go to FreeResponse.html after the activity
+        });
+      } else {
+        console.error("Error: continueButton not found in the DOM.");
+      }
     });
   </script>
 
