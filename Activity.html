@@ -48,22 +48,6 @@
 
   <h1>Farm Activity</h1>
 
-  <img src="pig.png" id="pig" class="draggable" style="bottom: 55px; left: 670px; width: 140px; height: 140px;" />
-  <img src="barn.png" id="barn" style="top: 140px; left: 5px; width: 300px; height: 300px; position: absolute;" />
-  <img src="hay.png" id="hay" class="draggable" style="top: 360px; left: 350px; width: 100px; height: 100px;" />
-  <img src="egg.png" id="egg1" class="draggable" style="bottom: 140px; left: 600px; width: 45px; height: 45px;" />
-  <img src="egg2.png" id="egg2" class="draggable" style="bottom: 133px; left: 590px; width: 45px; height: 45px;" />
-  <img src="egg3.png" id="egg3" class="draggable" style="bottom: 134px; left: 618px; width: 45px; height: 45px;" />
-  <img src="egg4.png" id="egg4" class="draggable" style="bottom: 135px; left: 605px; width: 45px; height: 45px;" />
-  <img src="basket.png" id="basket" class="draggable" style="top: 350px; left: 260px; width: 90px; height: 90px;" />
-  <img src="pumpkin.png" id="pumpkin1" class="draggable" style="top: 500px; left: 85px; width: 80px; height: 80px;" />
-  <img src="pumpkin2.png" id="pumpkin2" class="draggable" style="top: 525px; left: 125px; width: 75px; height: 75px;" />
-  <img src="pumpkin3.png" id="pumpkin3" class="draggable" style="top: 525px; left: 40px; width: 70px; height: 70px;" />
-  <img src="watering_can.png" id="watering_can" class="draggable" style="top: 378px; left: 115px; width: 80px; height: 60px;" />
-  <img src="cow.png" id="cow" class="draggable" style="bottom: 0px; left: 400px; width: 170px; height: 170px;" />
-  <img src="chicken.png" id="chicken" class="draggable" style="bottom: 154px; left: 540px; width: 90px; height: 90px;" />
-  <img src="garden.png" id="garden" style="bottom: 0px; right: -10px; width: 270px; height: 210px; position: absolute;" />
-
   <div class="text-container">
     <p>I need to get some work done around the farm.</p>
     <p>First, I gather the hay and take it to the cow.</p>
@@ -75,34 +59,111 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const draggables = document.querySelectorAll(".draggable");
+    // 1. Define instructions for different conditions
+    var instructionsCondition1 = {
+      type: 'html-keyboard-response',
+      stimulus: "<h2>Read the text below carefully, then answer the following questions.</h2>" +
+                "<p>I need to get some work done around the farm.</p>" +
+                "<p>First, I gather the hay and take it to the cow.</p>" +
+                "<p>Next, I collect eggs from the chicken coop and place them in the nearby basket.</p>" +
+                "<p>Then, one by one, I gather the pumpkins from the field and bring them to the pigs.</p>" +
+                "<p>The pigs are hungry, so they run to the pumpkins and begin to munch right away.</p>" +
+                "<p>Finally, I grab the watering can from the barn and water the garden so the vegetables can grow.</p>" +
+                "<p>All the animals are fed, and the farm is taken care of.</p>"
+    };
 
-      draggables.forEach((item) => {
-        item.addEventListener("mousedown", function (event) {
-          let shiftX = event.clientX - item.getBoundingClientRect().left;
-          let shiftY = event.clientY - item.getBoundingClientRect().top;
+    var instructionsCondition2 = {
+      type: 'html-keyboard-response',
+      stimulus: "<h2>Read the text and interact with the farm activity by dragging the animals and objects as instructed.</h2>" +
+                "<p>I need to get some work done around the farm.</p>" +
+                "<p>First, I gather the hay and take it to the cow.</p>" +
+                "<p>Next, I collect eggs from the chicken coop and place them in the nearby basket.</p>" +
+                "<p>Then, one by one, I gather the pumpkins from the field and bring them to the pigs.</p>" +
+                "<p>The pigs are hungry, so they run to the pumpkins and begin to munch right away.</p>" +
+                "<p>Finally, I grab the watering can from the barn and water the garden so the vegetables can grow.</p>" +
+                "<p>All the animals are fed, and the farm is taken care of.</p>"
+    };
 
-          function moveAt(pageX, pageY) {
-            item.style.left = pageX - shiftX + "px";
-            item.style.top = pageY - shiftY + "px";
-          }
+    var instructionsCondition3 = {
+      type: 'html-keyboard-response',
+      stimulus: "<h2>Read the text and imagine the animals moving around the farm as described.</h2>" +
+                "<p>I need to get some work done around the farm.</p>" +
+                "<p>First, I gather the hay and take it to the cow.</p>" +
+                "<p>Next, I collect eggs from the chicken coop and place them in the nearby basket.</p>" +
+                "<p>Then, one by one, I gather the pumpkins from the field and bring them to the pigs.</p>" +
+                "<p>The pigs are hungry, so they run to the pumpkins and begin to munch right away.</p>" +
+                "<p>Finally, I grab the watering can from the barn and water the garden so the vegetables can grow.</p>" +
+                "<p>All the animals are fed, and the farm is taken care of.</p>"
+    };
 
-          function onMouseMove(event) {
-            moveAt(event.pageX, event.pageY);
-          }
+    var instructionsCondition4 = {
+      type: 'html-keyboard-response',
+      stimulus: "<h2>Read the text and gesture as if you were moving the animals around the farm.</h2>" +
+                "<p>I need to get some work done around the farm.</p>" +
+                "<p>First, I gather the hay and take it to the cow.</p>" +
+                "<p>Next, I collect eggs from the chicken coop and place them in the nearby basket.</p>" +
+                "<p>Then, one by one, I gather the pumpkins from the field and bring them to the pigs.</p>" +
+                "<p>The pigs are hungry, so they run to the pumpkins and begin to munch right away.</p>" +
+                "<p>Finally, I grab the watering can from the barn and water the garden so the vegetables can grow.</p>" +
+                "<p>All the animals are fed, and the farm is taken care of.</p>"
+    };
 
-          document.addEventListener("mousemove", onMouseMove);
+    // 2. Define the free-response question
+    var freeResponseQuestion = {
+      type: 'survey-text',
+      questions: [
+        {
+          prompt: "Please describe your experience with the farm activity.",
+          rows: 5,  // Number of rows for text area
+          columns: 50  // Width of the text area
+        }
+      ],
+      on_finish: function(data) {
+        // You can access the response here if you need to save it
+        console.log(data.responses); // Prints the user's response
+      }
+    };
 
-          item.addEventListener("mouseup", function () {
-            document.removeEventListener("mousemove", onMouseMove);
-          });
+    // 3. Define the drag-and-drop task
+    var dragAndDropTask = {
+      type: 'html-keyboard-response',
+      stimulus: '<h1>Drag the items to the correct places on the farm!</h1>',
+      choices: jsPsych.NO_KEYS, // You could also use other keys to progress
+      on_finish: function() {
+        // Logic to transition to the free-response question
+        console.log('Task complete, moving to the next step.');
+      }
+    };
 
-          item.ondragstart = function () {
-            return false;
-          };
-        });
-      });
+    // 4. Randomize and assign condition
+    var conditions = [
+      instructionsCondition1, // Read text, text-based task, free response
+      instructionsCondition2, // Read text, draggable task, free response
+      instructionsCondition3, // Read text, imagine movement, draggable task, free response
+      instructionsCondition4  // Read text, gesture animals, draggable task, free response
+    ];
+
+    // Randomize the condition and assign it
+    var conditionIndex = jsPsych.randomization.randomize([0, 1, 2, 3])[0];
+    var selectedCondition = conditions[conditionIndex];
+
+    // 5. Define timeline with condition logic
+    var timeline = [];
+
+    // Add selected instructions
+    timeline.push(selectedCondition);
+
+    // Add drag-and-drop task (if applicable for the condition)
+    if (conditionIndex === 1 || conditionIndex === 2 || conditionIndex === 3 || conditionIndex === 4) {
+      timeline.push(dragAndDropTask);
+    }
+
+    // Add free-response question
+    timeline.push(freeResponseQuestion);
+
+    // 6. Initialize jsPsych and run the experiment
+    jsPsych.init({
+      timeline: timeline
     });
   </script>
 

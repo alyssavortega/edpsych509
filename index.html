@@ -4,25 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Farm Activity Experiment</title>
-
-  <!-- jsPsych Core Library -->
-  <script src="https://unpkg.com/jspsych@8.2.1"></script>
-  <link href="https://unpkg.com/jspsych@8.2.1/css/jspsych.css" rel="stylesheet">
-
-  <!-- Plugins -->
-  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.0.0"></script>
-  <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.0.0"></script>
-  <script src="https://unpkg.com/jspsych-pipe@1.0.0"></script>
-
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    #container { max-width: 600px; margin: auto; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+    textarea { width: 100%; height: 100px; margin-top: 10px; }
+  </style>
 </head>
 <body>
 
-<script>
-  // Randomly assign participants to one of four conditions
-  const conditions = ["text-only", "drag", "imagine", "gesture"];
-  const assignedCondition = jsPsych.randomization.sampleWithoutReplacement(conditions, 1)[0];
+  <div id="container">
+    <h2>Welcome to the Farm Activity Experiment</h2>
+    <div id="content"></div>
+    <button id="nextButton">Continue</button>
+  </div>
 
-  // Condition-specific instructions
+<script>
+  // 🚀 Randomly assign condition
+  const conditions = ["text-only", "drag", "imagine", "gesture"];
+  const assignedCondition = conditions[Math.floor(Math.random() * conditions.length)];
+
+  // 📜 Condition-specific instructions
   const instructionTexts = {
     "text-only": "Please read the following text carefully.",
     "drag": "Read the text, then drag the animals and objects accordingly.",
@@ -30,74 +32,82 @@
     "gesture": "Read the text and gesture the animals moving according to the text."
   };
 
-  // Instruction trial
-  const instructions = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `<p>${instructionTexts[assignedCondition]}</p>`,
-    choices: ["Continue"]
-  };
+  // 📌 Experiment Steps
+  let step = 0;
+  const contentDiv = document.getElementById("content");
+  const nextButton = document.getElementById("nextButton");
+  let userResponse = ""; // To store free-response answer
 
-  // Text-only activity
-  const textOnlyActivity = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
+  function showInstructions() {
+    contentDiv.innerHTML = `<p>${instructionTexts[assignedCondition]}</p>`;
+  }
+
+  function showTextOnlyActivity() {
+    contentDiv.innerHTML = `
       <p>I need to get some work done around the farm.</p>
       <p>First, I gather the hay and take it to the cow.</p>
       <p>Next, I collect eggs from the chicken coop and place them in the nearby basket.</p>
       <p>Then, one by one, I gather the pumpkins from the field and bring them to the pigs.</p>
       <p>The pigs are hungry, so they run to the pumpkins and begin to munch right away.</p>
       <p>Finally, I grab the watering can from the barn and water the garden so the vegetables can grow.</p>
-      <p>All the animals are fed, and the farm is taken care of.</p>`,
-    choices: ["Continue"]
-  };
-
-  // Redirect to external drag-and-drop farm activity page
-  const dragActivity = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: "<p>You will now complete an interactive farm activity.</p>",
-    choices: ["Start Activity"],
-    on_finish: function() {
-      window.location.href = "Activity.html"; // Updated to "Activity.html"
-    }
-  };
-
-  // Free-response question
-  const freeResponseQuestion = {
-    type: jsPsychSurveyText,
-    questions: [
-      { prompt: "Please describe your experience with the farm activity.", rows: 5, columns: 50 }
-    ]
-  };
-
-  // Save data to jsPsychPipe
-  const filename = `farm_activity_${jsPsych.randomization.randomID(10)}.csv`;
-  const save_data = { 
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "vMOMMZm8ucfh",  // Replace with your jsPsychPipe experiment ID
-    filename: filename,
-    data_string: () => jsPsych.data.get().csv()
-  };
-
-  // Timeline logic based on condition
-  let timeline = [instructions];
-
-  if (assignedCondition === "text-only") {
-    timeline.push(textOnlyActivity);
-  } else {
-    timeline.push(dragActivity);
+      <p>All the animals are fed, and the farm is taken care of.</p>`;
   }
 
-  timeline.push(freeResponseQuestion, save_data);
+  function redirectToActivity() {
+    contentDiv.innerHTML = `<p>You will now complete an interactive farm activity.</p>`;
+    nextButton.innerText = "Start Activity";
+    nextButton.onclick = () => {
+      window.location.href = "Activity.html"; // Redirect to activity
+    };
+  }
 
-  // Initialize jsPsych
-  jsPsych.init({
-    timeline: timeline,
-    on_finish: function() {
-      jsPsych.data.displayData(); // Show data after completion (optional)
+  function showFreeResponse() {
+    contentDiv.innerHTML = `
+      <p>Please describe your experience with the farm activity.</p>
+      <textarea id="responseBox"></textarea>
+    `;
+    nextButton.innerText = "Submit";
+  }
+
+  function saveData() {
+    userResponse = document.getElementById("responseBox").value;
+    const filename = `farm_activity_${Date.now()}.csv`;
+    const data = `Condition,Response\n"${assignedCondition}","${userResponse}"`;
+
+    // Create a Blob and trigger download
+    const blob = new Blob([data], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    contentDiv.innerHTML = "<p>Thank you for participating!</p>";
+    nextButton.style.display = "none";
+  }
+
+  // 🔄 Main Flow Control
+  nextButton.addEventListener("click", () => {
+    step++;
+    if (step === 1) {
+      showInstructions();
+    } else if (step === 2) {
+      if (assignedCondition === "text-only") {
+        showTextOnlyActivity();
+      } else {
+        redirectToActivity();
+        return;
+      }
+    } else if (step === 3) {
+      showFreeResponse();
+    } else if (step === 4) {
+      saveData();
     }
   });
 
+  // Start with instructions
+  showInstructions();
 </script>
 
 </body>
