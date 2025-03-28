@@ -46,16 +46,14 @@
     // Retrieve the assigned condition from sessionStorage
     const assignedCondition = sessionStorage.getItem("assignedCondition");
 
-    // Ensure that both the condition and response are strings
-    const conditionString = String(assignedCondition); // Convert to string if needed
-    const responseString = String(userResponse);  // Convert to string if needed
+    // Prepare the data to be sent as a plain object
+    const data = {
+      condition: assignedCondition,   // condition value
+      response: userResponse,         // user input response
+      timestamp: Date.now()            // timestamp for when the response is made
+    };
 
-    // Prepare the data in a plain format
-    const data = `Condition,Response\n"${conditionString}","${responseString}"`;
-
-    const filename = `farm_response_${Date.now()}.csv`;
-
-    // Send data to the jsPsych API
+    // Send the data to the jsPsych API
     fetch("https://pipe.jspsych.org/api/data/", {
       method: "POST",
       headers: {
@@ -63,9 +61,9 @@
         Accept: "*/*",
       },
       body: JSON.stringify({
-        experimentID: "vMOMMZm8ucfh",  // Replace with your experiment ID
-        filename: filename,
-        data: data,  // Send the raw string data
+        experimentID: "vMOMMZm8ucfh",  // Your experiment ID
+        filename: `farm_response_${Date.now()}.csv`,  // Unique filename
+        data: data  // Send data as a plain object
       }),
     })
     .then(response => response.json())
