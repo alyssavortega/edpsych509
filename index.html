@@ -36,29 +36,25 @@
   let step = 0;
   const contentDiv = document.getElementById("content");
   const nextButton = document.getElementById("nextButton");
-  let userResponse = ""; // To store free-response answer
+  let userResponse = ""; // Store free-response answer
+
+  function showIntro() {
+    contentDiv.innerHTML = `
+      <p>In this study, you will read a short story about some activities on a farm.</p>
+      <p>After reading the story, you will be asked to freely recall as much of the story's details as possible.</p>
+    `;
+  }
 
   function showInstructions() {
     contentDiv.innerHTML = `<p>${instructionTexts[assignedCondition]}</p>`;
   }
 
-  function showTextOnlyActivity() {
-    contentDiv.innerHTML = `
-      <p>I need to get some work done around the farm.</p>
-      <p>First, I gather the hay and take it to the cow.</p>
-      <p>Next, I collect eggs from the chicken coop and place them in the nearby basket.</p>
-      <p>Then, one by one, I gather the pumpkins from the field and bring them to the pigs.</p>
-      <p>The pigs are hungry, so they run to the pumpkins and begin to munch right away.</p>
-      <p>Finally, I grab the watering can from the barn and water the garden so the vegetables can grow.</p>
-      <p>All the animals are fed, and the farm is taken care of.</p>`;
-  }
-
-  function redirectToActivity() {
-    contentDiv.innerHTML = `<p>You will now complete an interactive farm activity.</p>`;
-    nextButton.innerText = "Start Activity";
-    nextButton.onclick = () => {
-      window.location.href = "Activity.html"; // Redirect to activity
-    };
+  function startActivity() {
+    if (assignedCondition === "text-only") {
+      window.location.href = "Story.html"; // Redirect to Story.html for text-only condition
+    } else {
+      window.location.href = "Activity.html"; // Redirect to Activity.html for all other conditions
+    }
   }
 
   function showFreeResponse() {
@@ -93,12 +89,7 @@
     if (step === 1) {
       showInstructions();
     } else if (step === 2) {
-      if (assignedCondition === "text-only") {
-        showTextOnlyActivity();
-      } else {
-        redirectToActivity();
-        return;
-      }
+      startActivity(); // 🚀 Goes directly to Story.html or Activity.html
     } else if (step === 3) {
       showFreeResponse();
     } else if (step === 4) {
@@ -106,8 +97,8 @@
     }
   });
 
-  // Start with instructions
-  showInstructions();
+  // Start with introduction
+  showIntro();
 </script>
 
 </body>

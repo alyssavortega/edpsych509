@@ -24,6 +24,7 @@
     }
 
     .text-container {
+      background: rgba(0, 0, 0, 0.5); 
       position: fixed;
       top: 1%;
       right: 2%;
@@ -31,6 +32,9 @@
       font-size: 22px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
       width: 500px;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
     }
 
     h1 {
@@ -41,6 +45,22 @@
       color: white;
       font-size: 24px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .continue-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .continue-button:hover {
+      background-color: lightgray;
     }
   </style>
 </head>
@@ -74,6 +94,8 @@
     <p>All the animals are fed, and the farm is taken care of.</p>
   </div>
 
+  <button class="continue-button" id="continueButton">Continue</button>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const draggables = document.querySelectorAll(".draggable");
@@ -102,6 +124,11 @@
             return false;
           };
         });
+      });
+
+      // Redirect to FreeResponse.html when the user clicks "Continue"
+      document.getElementById("continueButton").addEventListener("click", function() {
+        window.location.href = "FreeResponse.html";  // Go to FreeResponse.html after the activity
       });
     });
   </script>
