@@ -82,20 +82,23 @@
   <script>
     document.getElementById("submitButton").addEventListener("click", function() {
       // Collect user responses
-      const response1 = document.getElementById("responseBox1").value;
-      const response2 = document.getElementById("responseBox2").value;
-      const response3 = document.getElementById("responseBox3").value;
+      const retell = document.getElementById("responseBox1").value;
+      const condition = document.getElementById("responseBox2").value;
+      const gesture = document.getElementById("responseBox3").value;
+      const contact = document.getElementById("responseBox4").value;
+
 
       // Prepare data to be sent
-      const data = {
-        response1: response1,
-        response2: response2,
-        response3: response3,
+      const responsesArray = {
+        retell: retell,
+        condition: condition,
+        gesture: gesture,
+        contact: contact,
         timestamp: Date.now(), // Add timestamp to track submission time
       };
 
       // Log data for debugging
-      console.log("Data being sent:", data);
+      console.log("Responses Array:", responsesArray);
 
       // Send data to the DataPipe API
       fetch("https://pipe.jspsych.org/api/data/", {
