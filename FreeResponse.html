@@ -1,59 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Response</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-
-    #container {
-      max-width: 600px;
-      margin: auto;
-    }
-
-    textarea {
-      width: 100%;
-      height: 150px;
-      margin-top: 10px;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 15px;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="container">
-    <h2>Free Response</h2>
-    <p>Please describe your experience with the farm activity:</p>
-    <textarea id="responseBox"></textarea>
-    <br />
-    <button id="submitButton">Submit</button>
-  </div>
-
 <script>
   document.getElementById("submitButton").addEventListener("click", function() {
     const userResponse = document.getElementById("responseBox").value;
 
     // Retrieve the assigned condition from sessionStorage
     const assignedCondition = sessionStorage.getItem("assignedCondition");
+    
+    // If the condition is null, log an error
+    if (!assignedCondition) {
+      console.error("Condition is not set in sessionStorage!");
+      alert("Error: Condition not set.");
+      return;
+    }
 
-    // Prepare the data to be sent as a plain object
+    // Prepare data for sending
     const data = {
-      condition: assignedCondition,   // condition value
-      response: userResponse,         // user input response
-      timestamp: Date.now()            // timestamp for when the response is made
+      condition: assignedCondition, // condition from sessionStorage
+      response: userResponse,       // user input response
+      timestamp: Date.now()          // timestamp of the submission
     };
 
-    // Send the data to the jsPsych API
+    // Log data to check format
+    console.log("Data being sent:", data);
+
+    // Send data to the jsPsych API
     fetch("https://pipe.jspsych.org/api/data/", {
       method: "POST",
       headers: {
@@ -85,6 +54,3 @@
     });
   });
 </script>
-
-</body>
-</html>
