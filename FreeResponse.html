@@ -46,13 +46,12 @@
     // Retrieve the assigned condition from sessionStorage
     const assignedCondition = sessionStorage.getItem("assignedCondition");
 
-    // Prepare data for sending
-    const data = {
-      trial_type: "free_response",  // Define the trial type as 'free_response'
-      condition: assignedCondition, // Include the assigned condition
-      response: userResponse,       // Include the user response
-      timestamp: Date.now()         // Include a timestamp for submission
-    };
+    // Ensure that both the condition and response are strings
+    const conditionString = String(assignedCondition); // Convert to string if needed
+    const responseString = String(userResponse);  // Convert to string if needed
+
+    // Prepare the data in a plain format
+    const data = `Condition,Response\n"${conditionString}","${responseString}"`;
 
     const filename = `farm_response_${Date.now()}.csv`;
 
@@ -66,7 +65,7 @@
       body: JSON.stringify({
         experimentID: "vMOMMZm8ucfh",  // Replace with your experiment ID
         filename: filename,
-        data: JSON.stringify(data),  // Stringify the data correctly here
+        data: data,  // Send the raw string data
       }),
     })
     .then(response => response.json())
