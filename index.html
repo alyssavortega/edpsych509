@@ -14,7 +14,7 @@
 <body>
 
   <div id="container">
-    <h2>Welcome to the Farm Activity Experiment</h2>
+    <h2>Welcome!</h2>
     <div id="content"></div>
     <button id="nextButton">Continue</button>
   </div>
@@ -29,10 +29,10 @@ sessionStorage.setItem("assignedCondition", assignedCondition);
 
 // 📜 Condition-specific instructions
 const instructionTexts = {
-  "text-only": "Please read the following text carefully.",
-  "drag": "Read the text, then drag the animals and objects accordingly.",
-  "imagine": "Read the text and imagine the characters moving as described.",
-  "gesture": "Read the text and gesture the animals moving according to the text."
+  "text-only": "Please read the story on the next page twice. The story will appear on the next page.",
+  "drag": "Read the story line by line. At the end of each line, use your cursor or mouse to drag the animals and/or objects according to the actions described in the text. For example, if the text reads, 'I put the pizza on the plate,' you should move the image of the pizza on to the plate before reading the next line. Continue this line-by-line until you have read the full story. The story will appear on the next page.",
+  "imagine": "Read the story line by line. At the end of each line imagine the animals and/or objects moving according to the actions described in the text. For example, if the text reads, 'I put the pizza on the plate,' you should look to the image of the pizza and imagine it moving to the plate before reading the next line. Continue this line-by-line until you have read the full story. The story will appear on the next page.",
+  "gesture": "Read the story line by line. At the end of each line gesture toward the animals and/or objects according to the actions described in the text. For example, if the text reads, 'I put the pizza on the plate,' you should look to the image of the pizza and gesture the pizza moving to the plate before reading the next line. Continue this line-by-line until you have read the full story. The story will appear on the next page."
 };
 
 // 📌 Experiment Steps
@@ -44,7 +44,7 @@ let userResponse = ""; // Store free-response answer
 function showIntro() {
   contentDiv.innerHTML = `
     <p>In this study, you will read a short story about some activities on a farm.</p>
-    <p>After reading the story, you will be asked to freely recall as much of the story's details as possible.</p>
+    <p>After reading the story, you will be asked to freely recall as much of the story's details as possible. Please follow the instructions on the next page exactly. Do not read the story more than once unless you are prompted. </p>
   `;
 }
 
